@@ -5,14 +5,15 @@ import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
 
-import com.eightbitlab.supportrenderscriptblur.SupportRenderScriptBlur;
-import com.google.android.material.tabs.TabLayout;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
+import com.eightbitlab.supportrenderscriptblur.SupportRenderScriptBlur;
+import com.google.android.material.tabs.TabLayout;
+
 import eightbitlab.com.blurview.BlurView;
 
 public class MainActivity extends AppCompatActivity {
@@ -82,6 +83,45 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    enum Page {
+        FIRST("ScrollView") {
+            @Override
+            Fragment getFragment() {
+                return new ScrollFragment();
+            }
+        },
+        SECOND("RecyclerView") {
+            @Override
+            Fragment getFragment() {
+                return new ListFragment();
+            }
+        },
+        THIRD("Static") {
+            @Override
+            Fragment getFragment() {
+                return new ImageFragment();
+            }
+        },
+        FOURTH("Dynamic") {
+            @Override
+            Fragment getFragment() {
+                return new AddRemoveViewBlurFragment();
+            }
+        };
+
+        private final String title;
+
+        Page(String title) {
+            this.title = title;
+        }
+
+        String getTitle() {
+            return title;
+        }
+
+        abstract Fragment getFragment();
+    }
+
     static class ViewPagerAdapter extends FragmentPagerAdapter {
 
         ViewPagerAdapter(FragmentManager fragmentManager) {
@@ -102,38 +142,5 @@ public class MainActivity extends AppCompatActivity {
         public int getCount() {
             return Page.values().length;
         }
-    }
-
-    enum Page {
-        FIRST("ScrollView") {
-            @Override
-            Fragment getFragment() {
-                return new ScrollFragment();
-            }
-        },
-        SECOND("RecyclerView") {
-            @Override
-            Fragment getFragment() {
-                return new ListFragment();
-            }
-        },
-        THIRD("Static") {
-            @Override
-            Fragment getFragment() {
-                return new ImageFragment();
-            }
-        };
-
-        private String title;
-
-        Page(String title) {
-            this.title = title;
-        }
-
-        String getTitle() {
-            return title;
-        }
-
-        abstract Fragment getFragment();
     }
 }
